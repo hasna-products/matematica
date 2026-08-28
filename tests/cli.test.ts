@@ -133,10 +133,10 @@ test("goal create persists full resource budget caps", async () => {
 
 test("goal admission pins explicit multi-provider routing contract", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-openai-route";
-  process.env.ANTHROPIC_API_KEY = "sk-test-anthropic-route";
-  process.env.OPENROUTER_API_KEY = "sk-test-openrouter-route";
-  process.env.CEREBRAS_API_KEY = "sk-test-cerebras-route";
+  process.env.OPENAI_API_KEY = "test openai-route";
+  process.env.ANTHROPIC_API_KEY = "test anthropic-route";
+  process.env.OPENROUTER_API_KEY = "test openrouter-route";
+  process.env.CEREBRAS_API_KEY = "test cerebras-route";
   const created = JSON.parse(await runCli([
     "goal",
     "create",
@@ -209,7 +209,7 @@ test("goal admission pins explicit multi-provider routing contract", async () =>
 
 test("provider routing contract rejects ambiguous fallback inputs", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-openai-route";
+  process.env.OPENAI_API_KEY = "test openai-route";
   const created = JSON.parse(await runCli([
     "goal",
     "create",
@@ -694,8 +694,8 @@ test("fully governed 100-agent admission can be confirmed before dispatch", asyn
 
 test("remote high-fanout admission requires heterogeneous provider routes or waiver", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-openai-diversity";
-  process.env.ANTHROPIC_API_KEY = "sk-test-anthropic-diversity";
+  process.env.OPENAI_API_KEY = "test openai-diversity";
+  process.env.ANTHROPIC_API_KEY = "test anthropic-diversity";
   const createHighFanoutRun = () => runCli([
     "goal",
     "create",
@@ -1455,7 +1455,7 @@ test("GREE run persists experiment branch worker jobs", async () => {
 
 test("goal run can route branch workers through configured provider", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-cli-provider-route";
+  process.env.OPENAI_API_KEY = "test cli-provider-route";
   const created = JSON.parse(await runCli([
     "goal",
     "create",
@@ -1515,7 +1515,7 @@ test("goal run can route branch workers through configured provider", async () =
 
 test("providers hostile-dry-run persists adversarial review without leaking canary", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-cli-hostile-provider-route";
+  process.env.OPENAI_API_KEY = "test cli-hostile-provider-route";
   const created = JSON.parse(await runCli([
     "goal",
     "create",
@@ -1600,7 +1600,7 @@ test("providers hostile-dry-run persists adversarial review without leaking cana
 
 test("goal run blocks remote provider routing without explicit network opt-in", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-cli-provider-zero-network";
+  process.env.OPENAI_API_KEY = "test cli-provider-zero-network";
   const created = JSON.parse(await runCli([
     "goal",
     "create",
@@ -1655,7 +1655,7 @@ test("goal run blocks remote provider routing without explicit network opt-in", 
 
 test("goal run blocks remote provider fanout without explicit BYOK cost consent", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-cli-provider-fanout";
+  process.env.OPENAI_API_KEY = "test cli-provider-fanout";
   const created = JSON.parse(await runCli([
     "goal",
     "create",
@@ -1708,7 +1708,7 @@ test("goal run blocks remote provider fanout without explicit BYOK cost consent"
 
 test("goal run blocks single-worker remote provider routing without explicit BYOK cost consent", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-cli-provider-single-worker-consent";
+  process.env.OPENAI_API_KEY = "test cli-provider-single-worker-consent";
   const created = JSON.parse(await runCli([
     "goal",
     "create",
@@ -1766,7 +1766,7 @@ test("goal run blocks single-worker remote provider routing without explicit BYO
 
 test("goal run allows remote provider fanout with explicit BYOK cost consent", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-cli-provider-consent";
+  process.env.OPENAI_API_KEY = "test cli-provider-consent";
   const created = JSON.parse(await runCli([
     "goal",
     "create",
@@ -1866,7 +1866,7 @@ test("goal run allows remote provider fanout with explicit BYOK cost consent", a
 
 test("unledgered remote provider smoke refuses paid BYOK calls without a run ledger", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-cli-provider-smoke";
+  process.env.OPENAI_API_KEY = "test cli-provider-smoke";
 
   await expect(runCli([
     "providers",
@@ -1959,7 +1959,7 @@ test("provider smoke with run ledger persists request response usage budget and 
 
 test("goal run local-only blocks remote provider routing", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-cli-local-only";
+  process.env.OPENAI_API_KEY = "test cli-local-only";
   process.env.MATEMATICA_LOCAL_ONLY = "true";
   const created = JSON.parse(await runCli([
     "goal",
@@ -2518,7 +2518,7 @@ test("preflight budget blocks zero-attempt run before work starts", async () => 
 
 test("doctor and config redact provider secrets", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-secret-value";
+  process.env.OPENAI_API_KEY = "test secret-value";
 
   try {
     const doctor = await runCli(["doctor"]);
@@ -2536,11 +2536,11 @@ test("doctor and config redact provider secrets", async () => {
     expect(doctor).toContain("legal=provider_terms");
     expect(doctor).toContain("policyReviewed=2026-05-25");
     expect(doctor).toContain("<redacted>");
-    expect(doctor).not.toContain("sk-test-secret-value");
+    expect(doctor).not.toContain("test secret-value");
 
     const config = await runCli(["config", "show"]);
     expect(config).toContain("redactedApiKey");
-    expect(config).not.toContain("sk-test-secret-value");
+    expect(config).not.toContain("test secret-value");
 
     const providers = JSON.parse(await runCli(["providers", "list", "--json"]));
     expect(providers.some((provider: { provider: string; requestedModel: string; tools: string }) =>
@@ -2635,36 +2635,36 @@ function fakeExecutable(dir: string, name: string, body: string): string {
 
 test("goal create replay and report redact secret-looking input", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-cli-secret-value";
+  process.env.OPENAI_API_KEY = "test cli-secret-value";
 
   const createdOutput = await runCli([
     "goal",
     "create",
     "--problem",
-    "Prove lemma while hiding sk-test-cli-secret-value",
+    "Prove lemma while hiding test cli-secret-value",
     "--goal",
-    "Do not leak sk-test-cli-secret-value",
+    "Do not leak test cli-secret-value",
     "--max-attempts",
     "0"
   ]);
   expect(createdOutput).toContain("<redacted>");
-  expect(createdOutput).not.toContain("sk-test-cli-secret-value");
+  expect(createdOutput).not.toContain("test cli-secret-value");
 
   const created = JSON.parse(createdOutput);
   const replay = await runCli(["goal", "replay", created.id]);
   const report = await runCli(["goal", "report", created.id]);
   expect(`${replay}\n${report}`).toContain("<redacted>");
-  expect(`${replay}\n${report}`).not.toContain("sk-test-cli-secret-value");
+  expect(`${replay}\n${report}`).not.toContain("test cli-secret-value");
 });
 
 test("private mode persists explicit local-only privacy policy and redacted export intent", async () => {
   const home = tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-private-mode-secret";
+  process.env.OPENAI_API_KEY = "test private-mode-secret";
   const createdOutput = await runCli([
     "goal",
     "create",
     "--problem",
-    `Prove privacy for ${home} without leaking sk-test-private-mode-secret`,
+    `Prove privacy for ${home} without leaking test private-mode-secret`,
     "--goal",
     "Persist private retention policy",
     "--max-attempts",
@@ -2672,7 +2672,7 @@ test("private mode persists explicit local-only privacy policy and redacted expo
     "--private"
   ]);
   expect(createdOutput).not.toContain(home);
-  expect(createdOutput).not.toContain("sk-test-private-mode-secret");
+  expect(createdOutput).not.toContain("test private-mode-secret");
   const created = JSON.parse(createdOutput);
 
   const ledger = new Ledger(getAppPaths().dbPath);
@@ -2698,7 +2698,7 @@ test("private mode persists explicit local-only privacy policy and redacted expo
     expect(artifact?.kind).toBe("privacy.cli-policy");
     const policyText = readFileSync(artifact!.path, "utf8");
     expect(policyText).not.toContain(home);
-    expect(policyText).not.toContain("sk-test-private-mode-secret");
+    expect(policyText).not.toContain("test private-mode-secret");
   } finally {
     ledger.close();
   }
@@ -2729,7 +2729,7 @@ test("private mode persists explicit local-only privacy policy and redacted expo
   });
   const bundleText = readFileSync(exportPath, "utf8");
   expect(bundleText).not.toContain(home);
-  expect(bundleText).not.toContain("sk-test-private-mode-secret");
+  expect(bundleText).not.toContain("test private-mode-secret");
 
   await expect(runCli([
     "goal",
@@ -2743,7 +2743,7 @@ test("private mode persists explicit local-only privacy policy and redacted expo
 
 test("goal replay manifest and offline replay use persisted artifacts only", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-replay-secret-value";
+  process.env.OPENAI_API_KEY = "test replay-secret-value";
   const created = JSON.parse(await runCli([
     "goal",
     "create",
@@ -2853,7 +2853,7 @@ test("goal replay manifest and offline replay use persisted artifacts only", asy
   expect(offline.nonReplayableSteps.some((step: { type: string }) => step.type === "ai.call.started")).toBe(true);
   expect(offline.nonReplayableSteps.some((step: { type: string }) => step.type === "source.query")).toBe(true);
   expect(offline.nonReplayableSteps.some((step: { type: string }) => step.type === "external.operation.started")).toBe(true);
-  expect(JSON.stringify(offline)).not.toContain("sk-test-replay-secret-value");
+  expect(JSON.stringify(offline)).not.toContain("test replay-secret-value");
 
   const verifiedOffline = JSON.parse(await runCli(["goal", "replay", created.id, "--offline", "--verify-final"], process.cwd(), {
     arxivSearch: async () => {
@@ -2868,7 +2868,7 @@ test("goal replay manifest and offline replay use persisted artifacts only", asy
   expect(verifiedOffline.finalVerification.recomputed.finalOutcome.state).toBe("computational_evidence");
   expect(verifiedOffline.finalVerification.recomputed.reportIdempotencyKey).toMatch(/^report_[a-f0-9]{32}$/);
   expect(verifiedOffline.finalVerification.recomputed.budgetUsage).toEqual(verifiedOffline.finalVerification.persisted.budgetUsage);
-  expect(JSON.stringify(verifiedOffline)).not.toContain("sk-test-replay-secret-value");
+  expect(JSON.stringify(verifiedOffline)).not.toContain("test replay-secret-value");
 
   const deterministic = JSON.parse(await runCli(["goal", "replay", created.id, "--deterministic"], process.cwd(), {
     arxivSearch: async () => {
@@ -2909,12 +2909,12 @@ test("goal replay manifest and offline replay use persisted artifacts only", asy
     /^[a-f0-9]{64}$/.test(effect.requestArtifactHash ?? "") &&
     /^[a-f0-9]{64}$/.test(effect.responseArtifactHash ?? "")
   )).toBe(true);
-  expect(JSON.stringify(deterministic)).not.toContain("sk-test-replay-secret-value");
+  expect(JSON.stringify(deterministic)).not.toContain("test replay-secret-value");
 });
 
 test("goal replay export imports into a clean home without private paths or secrets", async () => {
   const sourceHome = tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-repro-bundle-secret";
+  process.env.OPENAI_API_KEY = "test repro-bundle-secret";
   const created = JSON.parse(await runCli([
     "goal",
     "create",
@@ -2935,7 +2935,7 @@ test("goal replay export imports into a clean home without private paths or secr
     sourceArtifacts.create(
       created.id,
       "diagnostic.private-path",
-      `source home ${sourceHome} with secret sk-test-repro-bundle-secret`
+      `source home ${sourceHome} with secret test repro-bundle-secret`
     );
   } finally {
     sourceLedger.close();
@@ -2958,7 +2958,7 @@ test("goal replay export imports into a clean home without private paths or secr
 
   const bundleText = readFileSync(exportPath, "utf8");
   expect(bundleText).not.toContain(sourceHome);
-  expect(bundleText).not.toContain("sk-test-repro-bundle-secret");
+  expect(bundleText).not.toContain("test repro-bundle-secret");
   const bundle = JSON.parse(bundleText);
   expect(bundle.redaction).toMatchObject({
     policy: "portable_no_secret_no_private_paths",
@@ -2990,7 +2990,7 @@ test("goal replay export imports into a clean home without private paths or secr
   for (const artifact of bundle.artifacts as Array<{ contentBase64: string }>) {
     const decoded = Buffer.from(artifact.contentBase64, "base64").toString("utf8");
     expect(decoded).not.toContain(sourceHome);
-    expect(decoded).not.toContain("sk-test-repro-bundle-secret");
+    expect(decoded).not.toContain("test repro-bundle-secret");
   }
 
   const cleanHome = tempHome();
@@ -3007,7 +3007,7 @@ test("goal replay export imports into a clean home without private paths or secr
   expect(importedReplay.finalVerification.ok).toBe(true);
   expect(importedReplay.finalVerification.recomputed.reportHash).toBe(bundle.expected.reportHash);
   expect(JSON.stringify(importedReplay)).not.toContain(sourceHome);
-  expect(JSON.stringify(importedReplay)).not.toContain("sk-test-repro-bundle-secret");
+  expect(JSON.stringify(importedReplay)).not.toContain("test repro-bundle-secret");
 });
 
 test("compressed run archive imports and arXiv cache pruning preserves ledger audit", async () => {
@@ -3583,7 +3583,7 @@ test("goal resume does not reopen goal_met even with reopen-terminal", async () 
 
 test("goal resume reconciles crash artifacts and continues without duplicate provider calls", async () => {
   tempHome();
-  process.env.OPENAI_API_KEY = "sk-test-resume-secret-value";
+  process.env.OPENAI_API_KEY = "test resume-secret-value";
   const created = JSON.parse(await runCli([
     "goal",
     "create",
